@@ -2182,27 +2182,29 @@ const core = __webpack_require__(470);
 const cache = __webpack_require__(692);
 const io = __webpack_require__(1);
 const fs = __webpack_require__(747)
+const os = __webpack_require__(87);
 
 
 // most @actions toolkit packages have async methods
 async function run() {
   try { 
+    const homedir = os.homedir();
     core.info('Testing the cache NPM package')
     core.info('Going to try to restore key `test-cache-key`')
-    let test_cache_key = cache.restoreCache(['~/*'], 'test-cache-key')
+    let test_cache_key = cache.restoreCache([`${homedir}/*`], 'test-cache-key')
     if(test_cache_key) {
       core.info('Great! Got the cache just as expected!')
       let files = fs.readdirSync('~/')
       core.info(`File List\n${files}`)
     } else {
-      await io.mkdirP('~/test-cache-1/items/')
-      fs.writeFileSync('~/test-cache-1/items/item1.txt', 'Lorem ipsum')
-      await io.mkdirP('~/test-cache-2/items/')
-      fs.writeFileSync('~/test-cache-2/items/item2.txt', 'Lorem ipsum')
+      await io.mkdirP(`${homedir}/test-cache-1/items/`)
+      fs.writeFileSync(`${homedir}/test-cache-1/items/item1.txt`, 'Lorem ipsum')
+      await io.mkdirP(`${homedir}/test-cache-2/items/`)
+      fs.writeFileSync(`${homedir}/test-cache-2/items/item2.txt`, 'Lorem ipsum')
       try {
         let cacheId = await cache.saveCache([
-          '~/test-cache-1',
-          '~/test-cache-2'
+          `${homedir}/test-cache-1`,
+          `${homedir}/test-cache-2`
         ], 'test-cache-key')
         core.info(`Successfully saved to ${cacheId}`)
       } catch(error) {
