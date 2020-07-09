@@ -13,6 +13,8 @@ async function run() {
     core.info('Going to try to restore key `test-cache-key`')
     let test_cache_key = await cache.restoreCache([`${homedir}/*`], 'test-cache-key')
     if(test_cache_key) {
+      await io.mkdirP(`${homedir}/test-cache-1/items/`)
+      await io.mkdirP(`${homedir}/test-cache-2/items/`)
       core.info('Great! Got the cache just as expected!')
       core.info(`${test_cache_key}`)
       let files = fs.readdirSync(`${homedir}/`)
