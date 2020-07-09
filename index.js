@@ -11,7 +11,7 @@ async function run() {
     const homedir = os.homedir();
     core.info('Testing the cache NPM package')
     core.info('Going to try to restore key `test-cache-key`')
-    let test_cache_key = await cache.restoreCache([`${homedir}/*`], 'test-cache-key')
+    let test_cache_key = await cache.restoreCache([`${homedir}/test-cache-1`, `${homedir}/test-cache-2`], 'test-cache-key')
     if(test_cache_key) {
       await io.mkdirP(`${homedir}/test-cache-1/items/`)
       await io.mkdirP(`${homedir}/test-cache-2/items/`)
